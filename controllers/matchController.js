@@ -31,7 +31,6 @@ exports.updateMatch = async (req, res, next) => {
         });
 
         if (req.body.team1Point + req.body.team2Point == 3) {
-            console.log(match);
             let team1 = await Team.findOne({ teamName: match.team1 });
             let team2 = await Team.findOne({ teamName: match.team2 });
         
