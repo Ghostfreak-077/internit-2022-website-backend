@@ -3,7 +3,7 @@ const Team = require("../models/teamModel"); //schema
 //create Team
 exports.createTeam = async (req, res, next) => {
     try {
-        const team = await Team.create(req.body);
+        const team = await Team.create(req.body.team);
         res.status(201).json({
             success: true,
             team
@@ -23,7 +23,7 @@ exports.updateTeam = async (req, res, next) => {
                 message: "Team not found"
             })
         }
-        team = await Team.findByIdAndUpdate(req.params.id, req.body, {
+        team = await Team.findByIdAndUpdate(req.params.id, req.body.data, {
             new: true,
             runValidators: true,
             useFindAndModify: false

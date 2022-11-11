@@ -4,7 +4,7 @@ const Team = require("../models/teamModel"); //schema
 //create match
 exports.createMatch = async (req, res, next) => {
     try {
-        const match = await Match.create(req.body);
+        const match = await Match.create(req.body.infos);
         res.status(201).json({
             success: true,
             match

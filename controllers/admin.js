@@ -20,7 +20,9 @@ exports.addAdmin = async (req, res) => {
 
 exports.isAuthenticatedUser = async (req, res, next) => {
     try {
-        const { internit } = req.cookies;
+        // const { internit } = req.cookies;
+        const internit = req.body.token
+        console.log(internit);
         
         if (!internit) {
             return res.status(401).json({

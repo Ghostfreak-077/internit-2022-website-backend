@@ -5,6 +5,7 @@ const connectDataBase = require("./config/database");
 //connecting to database
 connectDataBase();
 
+
 //config
 if(process.env.NODE_ENV!=="PRODUCTION"){
     require("dotenv").config({ path: "./config/.env" });

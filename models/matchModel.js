@@ -11,17 +11,25 @@ const matchSchema = new mongoose.Schema({
         required: [true, "Please Enter team 2 Name"],
         trim: true,
     },
+    completed: {
+        type: String,
+        required: [true, "Please Enter if its completed"]
+    },
+    game:{
+        type: String,
+        required: [true, "Please Enter the game"],
+    },
     matchType: {
         type: String,
         required: [true, "Please Enter type of match"],
     },
     team1Point: {
         type: Number,
-        required: [true, "Please Enter team 1 points"],
+        required: [false, "Please Enter team 1 points"],
     },
     team2Point: {
         type: Number,
-        required: [true, "Please Enter team 2 points"],
+        required: [false, "Please Enter team 2 points"],
     }
 })
 

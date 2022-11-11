@@ -10,11 +10,27 @@ const teamSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Please Enter Id of team"],
     },
-    gamePlayed: {
+    badmintonPlayed: {
         type: Number,
         required: [true, "Please Enter Game played by team"],
     },
-    wins: {
+    ttPlayed: {
+        type: Number,
+        required: [true, "Please Enter Game played by team"],
+    },
+    chessPlayed: {
+        type: Number,
+        required: [true, "Please Enter Game played by team"],
+    },
+    badmintonWins: {
+        type: Number,
+        required: [true, "Please Enter wins of team"],
+    },
+    ttWins: {
+        type: Number,
+        required: [true, "Please Enter wins of team"],
+    },
+    chessWins: {
         type: Number,
         required: [true, "Please Enter wins of team"],
     },
