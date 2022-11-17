@@ -24,7 +24,7 @@ exports.updateMatch = async (req, res, next) => {
                 message: "match not found"
             })
         }
-        match = await Match.findByIdAndUpdate(req.params.id, req.body, {
+        match = await Match.findByIdAndUpdate(req.params.id, req.body.data, {
             new: true,
             runValidators: true,
             useFindAndModify: false

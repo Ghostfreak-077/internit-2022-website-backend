@@ -6,6 +6,14 @@ const matchSchema = new mongoose.Schema({
         required: [true, "Please Enter team 1 Name"],
         trim: true,
     },
+    date:{
+        type: Date,
+        required:[true, "please enter Date"]
+    },
+    time:{
+        type: String,
+        required:[true, "Please Enter Date"]
+    },
     team2: {
         type: String,
         required: [true, "Please Enter team 2 Name"],
