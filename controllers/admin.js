@@ -6,12 +6,20 @@ const jwt = require("jsonwebtoken");
 exports.addAdmin = async (req, res) => {
     try {
 
-        const admin = await Admin.create(req.body);
+        signed = jwt.sign(req.body.password, secretOrPrivateKey=process.env.JWT_TOKEN)
+        const {role, email} = req.body
+
+        const admin = await Admin.create({
+            role,
+            password : signed,
+            email
+        });
+        // sendToken(admin, 201, res)
+
         res.status(201).json({
             success: true,
             admin
         });
-        sendToken(admin, 201, res)
 
     } catch (err) {
         res.send(err.message)
@@ -54,14 +62,22 @@ exports.login = async (req, res, next) => {
             })
         }
 
+        console.log("done");
+
         const admin = await Admin.findOne({ role: "admin" }).select("+password");
-        if (admin.email !== email || admin.password !== password) {
+
+        const token = jwt.sign(password,process.env.JWT_TOKEN)
+
+        if (admin.email !== email || token !== admin.password) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid Enter Email or Password"
             })
         }
-        sendToken(admin, 201, res)
+
+        console.log("done");
+
+        res.status(201).json(admin)
 
     } catch (err) {
         res.send(err.message);
