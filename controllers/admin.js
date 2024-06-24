@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 exports.addAdmin = async (req, res) => {
     try {
 
-        signed = jwt.sign(req.body.password, secretOrPrivateKey=process.env.JWT_TOKEN)
-        const {role, email} = req.body
+        const {role, email, password} = req.body
+        const signed = jwt.sign({email, password}, secretOrPrivateKey=process.env.JWT_SECRET)
 
         const admin = await Admin.create({
             role,
@@ -28,19 +28,20 @@ exports.addAdmin = async (req, res) => {
 
 exports.isAuthenticatedUser = async (req, res, next) => {
     try {
-        // const { internit } = req.cookies;
-        const internit = req.body.token
-        console.log(internit);
+        const token = req.cookies.internit;
+        // const token = req.body.token
+        const email = token?jwt.verify(token, process.env.JWT_SECRET).email:'';
         
-        if (!internit) {
+        const user = await Admin.findOne({ email: email }).select('+password');
+        console.log(user);
+        
+        if (!token || !user || token !== user.password) {
             return res.status(401).json({
                 success: false,
                 message: "Please login to access this Resource",
             })
         }
-        
-        const decodedData = jwt.verify(internit, process.env.JWT_SECRET);
-        req.user = await Admin.findById(decodedData.id);
+
         next();
 
     } catch (err) {
@@ -62,22 +63,28 @@ exports.login = async (req, res, next) => {
             })
         }
 
-        console.log("done");
+        // console.log("done");
 
-        const admin = await Admin.findOne({ role: "admin" }).select("+password");
-
-        const token = jwt.sign(password,process.env.JWT_TOKEN)
-
-        if (admin.email !== email || token !== admin.password) {
+        const admin = await Admin.findOne({ email: email }).select("+password");
+        const token_db = jwt.verify(admin.password,process.env.JWT_SECRET)
+        
+        if (admin.email !== email || token_db.password !== password) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid Enter Email or Password"
             })
         }
 
-        console.log("done");
+        // console.log("done");
+        res.cookie("internit", admin.password, {
+            expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+        });
 
-        res.status(201).json(admin)
+        res.status(201).json({
+            success: true,
+            admin
+        })
 
     } catch (err) {
         res.send(err.message);
